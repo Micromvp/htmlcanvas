@@ -46,11 +46,12 @@
     }
 
     .sidebar {
+      position: relative;
       display: flex;
       flex-direction: column;
       min-width: 0;
       border-right: 1px solid var(--border);
-      background: var(--panel-muted);
+      background: var(--panel);
     }
 
     .brand-row {
@@ -83,21 +84,7 @@
 
     .brand-name { font-weight: 650; font-size: 14px; }
 
-    .workspace-switch {
-      width: 28px;
-      height: 28px;
-      margin-left: auto;
-      display: grid;
-      place-items: center;
-      border: 0;
-      border-radius: 5px;
-      background: transparent;
-      cursor: pointer;
-    }
-
-    .workspace-switch:hover { background: var(--hover); }
-
-    .sidebar-content { padding: 10px 8px; }
+    .sidebar-content { padding: 12px 10px; }
 
     .nav-label {
       margin: 18px 10px 6px;
@@ -107,38 +94,138 @@
       text-transform: uppercase;
     }
 
-    .nav-label-row {
-      height: 28px;
+    .workspace-bar {
+      position: relative;
       display: flex;
       align-items: center;
-      margin: 14px 4px 2px 10px;
+      gap: 4px;
+      padding: 14px 8px 8px;
     }
 
-    .nav-label-row .nav-label { margin: 0; }
-
-    .add-workspace-button {
-      width: 26px;
-      height: 26px;
-      margin-left: auto;
-      display: grid;
-      place-items: center;
+    .current-workspace {
+      min-width: 0;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex: 1;
+      padding: 0 6px;
       border: 0;
-      border-radius: 4px;
+      border-radius: 6px;
       background: transparent;
-      color: var(--text-secondary);
+      text-align: left;
       cursor: pointer;
     }
 
-    .add-workspace-button:hover { background: var(--hover); color: var(--text); }
-    .add-workspace-button svg { width: 14px; height: 14px; }
+    .current-workspace:hover, .current-workspace[aria-expanded="true"] { background: var(--hover); }
+    .current-workspace svg { width: 14px; height: 14px; margin-left: auto; flex: 0 0 auto; }
 
-    .nav-item {
+    .workspace-avatar {
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 50%;
+      background: #ffc928;
+      color: #171717;
+      font-size: 10px;
+    }
+
+    .current-workspace-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .workspace-plan {
+      flex: 0 0 auto;
+      padding: 3px 5px;
+      border-radius: 5px;
+      background: #edf7ff;
+      color: #0d7fd9;
+      font-size: 9px;
+      font-weight: 600;
+    }
+
+    .workspace-dropdown {
+      position: absolute;
+      top: 58px;
+      left: 8px;
+      right: 8px;
+      z-index: 25;
+      display: none;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #1f1f1f;
+      color: #f5f5f5;
+      box-shadow: 0 12px 32px rgba(0,0,0,.24);
+    }
+
+    .workspace-dropdown.open { display: block; }
+    .workspace-list { padding: 10px 8px; }
+
+    .workspace-item {
       width: 100%;
-      height: 34px;
+      height: 39px;
+      display: grid;
+      grid-template-columns: 18px 25px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      padding: 0 8px;
+      border: 0;
+      border-radius: 5px;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .workspace-item:hover { background: #333333; }
+    .workspace-check { width: 16px; height: 16px; opacity: 0; }
+    .workspace-item.is-current .workspace-check { opacity: 1; }
+    .workspace-item .workspace-avatar { width: 25px; height: 25px; }
+    .workspace-item-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+
+    .workspace-tier {
+      padding: 3px 6px;
+      border-radius: 5px;
+      background: #484848;
+      color: #f2f2f2;
+      font-size: 10px;
+    }
+
+    .workspace-tier.locked { background: #ffc928; color: #1b1b1b; }
+
+    .create-workspace-row {
+      width: 100%;
+      height: 48px;
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 0 10px;
+      padding: 0 17px;
+      border: 0;
+      border-top: 1px solid #3a3a3a;
+      background: transparent;
+      color: #fff;
+      text-align: left;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .create-workspace-row:hover { background: #2d2d2d; }
+    .create-workspace-row svg { width: 18px; height: 18px; }
+
+    .nav-item {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
       border: 0;
       border-radius: 5px;
       background: transparent;
@@ -148,7 +235,7 @@
 
     .nav-item:hover { background: var(--hover); }
     .nav-item.active { background: #e8e8e8; font-weight: 600; }
-    .nav-item svg { width: 15px; height: 15px; stroke-width: 1.8; }
+    .nav-item svg { width: 17px; height: 17px; stroke-width: 1.8; }
 
     .sidebar-footer {
       margin-top: auto;
@@ -599,23 +686,32 @@
       <div class="brand-row">
         <div class="logo" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
         <div class="brand-name">HTML Canvas</div>
-        <button class="workspace-switch" title="Switch workspace" aria-label="Switch workspace"><i data-lucide="chevrons-up-down"></i></button>
+      </div>
+
+      <div class="workspace-bar">
+        <button class="current-workspace" id="workspaceSwitcher" aria-expanded="false" aria-haspopup="menu">
+          <span class="workspace-avatar" id="currentWorkspaceAvatar">S</span>
+          <span class="current-workspace-name" id="currentWorkspaceName">Sider Team</span>
+          <i data-lucide="chevron-down"></i>
+        </button>
+        <span class="workspace-plan" id="currentWorkspacePlan">Professional</span>
+
+        <div class="workspace-dropdown" id="workspaceDropdown" role="menu">
+          <div class="workspace-list" id="workspaceList">
+            <button class="workspace-item" data-workspace data-access="Invite only" data-plan="Free" data-color="#f4513b"><i class="workspace-check" data-lucide="check"></i><span class="workspace-avatar">F</span><span class="workspace-item-name">Figduo</span><span class="workspace-tier">Free</span></button>
+            <button class="workspace-item" data-workspace data-access="Invite only" data-plan="Locked" data-color="#7789ad"><i class="workspace-check" data-lucide="check"></i><span class="workspace-avatar">F</span><span class="workspace-item-name">Figma</span><span class="workspace-tier locked">Locked</span></button>
+            <button class="workspace-item" data-workspace data-access="Workspace members" data-plan="Locked" data-color="#19a864"><i class="workspace-check" data-lucide="check"></i><span class="workspace-avatar">L</span><span class="workspace-item-name">Leo</span><span class="workspace-tier locked">Locked</span></button>
+            <button class="workspace-item is-current" data-workspace data-access="Workspace members" data-plan="Professional" data-color="#ffc928"><i class="workspace-check" data-lucide="check"></i><span class="workspace-avatar">S</span><span class="workspace-item-name">Sider Team</span><span class="workspace-tier">Pro</span></button>
+            <button class="workspace-item" data-workspace data-access="Workspace members" data-plan="Education" data-color="#0d99ff"><i class="workspace-check" data-lucide="check"></i><span class="workspace-avatar">W</span><span class="workspace-item-name">wom-labs</span><span class="workspace-tier">Edu</span></button>
+          </div>
+          <button class="create-workspace-row" id="addWorkspaceButton"><i data-lucide="plus"></i>Create new</button>
+        </div>
       </div>
 
       <nav class="sidebar-content" aria-label="Project navigation">
-        <button class="nav-item active" data-filter="all"><i data-lucide="layout-grid"></i>All projects</button>
-        <button class="nav-item" data-filter="recent"><i data-lucide="clock-3"></i>Recent</button>
-        <button class="nav-item" data-filter="starred"><i data-lucide="star"></i>Starred</button>
-
-        <div class="nav-label-row"><div class="nav-label">Workspaces</div><button class="add-workspace-button" id="addWorkspaceButton" title="Create workspace" aria-label="Create workspace"><i data-lucide="plus"></i></button></div>
-        <div id="workspaceList">
-          <button class="nav-item workspace-item" data-workspace data-access="Invite only"><i data-lucide="circle-user-round"></i><span>Personal</span></button>
-          <button class="nav-item workspace-item" data-workspace data-access="Workspace members"><i data-lucide="box"></i><span>Acme Design</span></button>
-        </div>
-
-        <div class="nav-label">Resources</div>
-        <button class="nav-item"><i data-lucide="panels-top-left"></i>Community templates</button>
-        <button class="nav-item"><i data-lucide="users"></i>Shared with me</button>
+        <button class="nav-item active" data-filter="recent" data-view-title="Drafts"><i data-lucide="file"></i>Drafts</button>
+        <button class="nav-item" data-filter="all" data-view-title="All folders"><i data-lucide="grid-2x2"></i>All folders</button>
+        <button class="nav-item"><i data-lucide="panels-top-left"></i>Resources</button>
         <button class="nav-item"><i data-lucide="trash-2"></i>Trash</button>
       </nav>
 
@@ -762,6 +858,11 @@
     const emptyState = document.getElementById('emptyState');
     const projectMenu = document.getElementById('projectMenu');
     const workspaceList = document.getElementById('workspaceList');
+    const workspaceSwitcher = document.getElementById('workspaceSwitcher');
+    const workspaceDropdown = document.getElementById('workspaceDropdown');
+    const currentWorkspaceName = document.getElementById('currentWorkspaceName');
+    const currentWorkspaceAvatar = document.getElementById('currentWorkspaceAvatar');
+    const currentWorkspacePlan = document.getElementById('currentWorkspacePlan');
     const workspaceMenu = document.getElementById('workspaceMenu');
     const workspaceDialog = document.getElementById('workspaceDialog');
     const deleteWorkspaceDialog = document.getElementById('deleteWorkspaceDialog');
@@ -811,12 +912,32 @@
       workspaceMenu.classList.remove('open');
     }
 
+    function closeWorkspaceDropdown() {
+      workspaceDropdown.classList.remove('open');
+      workspaceSwitcher.setAttribute('aria-expanded', 'false');
+    }
+
+    function selectWorkspace(workspace) {
+      workspaceList.querySelectorAll('.workspace-item').forEach(item => item.classList.remove('is-current'));
+      workspace.classList.add('is-current');
+      activeWorkspace = workspace;
+      const name = workspace.querySelector('.workspace-item-name').textContent;
+      const avatar = workspace.querySelector('.workspace-avatar').textContent;
+      const color = workspace.dataset.color || '#0d99ff';
+      currentWorkspaceName.textContent = name;
+      currentWorkspaceAvatar.textContent = avatar;
+      currentWorkspaceAvatar.style.background = color;
+      currentWorkspacePlan.textContent = workspace.dataset.plan || 'Free';
+      closeWorkspaceDropdown();
+      showToast('Switched to ' + name);
+    }
+
     function openWorkspaceDialog(mode, workspace = null) {
       workspaceDialogMode = mode;
       activeWorkspace = workspace;
       const title = document.getElementById('workspaceDialogTitle');
       const saveButton = document.getElementById('saveWorkspace');
-      const currentName = workspace?.querySelector('span')?.textContent || 'New workspace';
+      const currentName = workspace?.querySelector('.workspace-item-name')?.textContent || 'New workspace';
       workspaceName.value = currentName;
       workspaceAccessGroup.hidden = mode !== 'settings';
       if (mode === 'create') {
@@ -836,15 +957,23 @@
 
     function createWorkspaceItem(name) {
       const button = document.createElement('button');
-      button.className = 'nav-item workspace-item';
+      button.className = 'workspace-item';
       button.dataset.workspace = '';
       button.dataset.access = 'Invite only';
-      button.innerHTML = '<i data-lucide="box"></i><span></span>';
-      button.querySelector('span').textContent = name;
+      button.dataset.plan = 'Free';
+      button.dataset.color = '#0d99ff';
+      button.innerHTML = '<i class="workspace-check" data-lucide="check"></i><span class="workspace-avatar"></span><span class="workspace-item-name"></span><span class="workspace-tier">Free</span>';
+      button.querySelector('.workspace-avatar').textContent = name.charAt(0).toUpperCase();
+      button.querySelector('.workspace-avatar').style.background = button.dataset.color;
+      button.querySelector('.workspace-item-name').textContent = name;
       workspaceList.appendChild(button);
       lucide.createIcons({ nodes: [button] });
       return button;
     }
+
+    workspaceList.querySelectorAll('.workspace-item').forEach(workspace => {
+      workspace.querySelector('.workspace-avatar').style.background = workspace.dataset.color;
+    });
 
     searchInput.addEventListener('input', applyFilters);
 
@@ -856,13 +985,25 @@
       if (event.key === 'Escape') {
         closeMenu();
         closeWorkspaceMenu();
+        closeWorkspaceDropdown();
         dialog.classList.remove('open');
         workspaceDialog.classList.remove('open');
         deleteWorkspaceDialog.classList.remove('open');
       }
     });
 
-    document.getElementById('addWorkspaceButton').addEventListener('click', () => openWorkspaceDialog('create'));
+    workspaceSwitcher.addEventListener('click', event => {
+      event.stopPropagation();
+      const open = !workspaceDropdown.classList.contains('open');
+      workspaceDropdown.classList.toggle('open', open);
+      workspaceSwitcher.setAttribute('aria-expanded', String(open));
+      closeWorkspaceMenu();
+    });
+
+    document.getElementById('addWorkspaceButton').addEventListener('click', () => {
+      closeWorkspaceDropdown();
+      openWorkspaceDialog('create');
+    });
 
     workspaceList.addEventListener('contextmenu', event => {
       const workspace = event.target.closest('.workspace-item');
@@ -878,8 +1019,7 @@
     workspaceList.addEventListener('click', event => {
       const workspace = event.target.closest('.workspace-item');
       if (!workspace) return;
-      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-      workspace.classList.add('active');
+      selectWorkspace(workspace);
     });
 
     workspaceMenu.addEventListener('click', event => {
@@ -890,7 +1030,7 @@
       if (action.dataset.workspaceAction === 'rename') openWorkspaceDialog('rename', workspace);
       if (action.dataset.workspaceAction === 'settings') openWorkspaceDialog('settings', workspace);
       if (action.dataset.workspaceAction === 'delete') {
-        document.getElementById('deleteWorkspaceName').textContent = workspace.querySelector('span').textContent;
+        document.getElementById('deleteWorkspaceName').textContent = workspace.querySelector('.workspace-item-name').textContent;
         deleteWorkspaceDialog.classList.add('open');
       }
     });
@@ -902,10 +1042,16 @@
       const name = workspaceName.value.trim() || 'Untitled workspace';
       if (workspaceDialogMode === 'create') {
         activeWorkspace = createWorkspaceItem(name);
+        selectWorkspace(activeWorkspace);
         showToast('Workspace created: ' + name);
       } else {
-        activeWorkspace.querySelector('span').textContent = name;
+        activeWorkspace.querySelector('.workspace-item-name').textContent = name;
+        activeWorkspace.querySelector('.workspace-avatar').textContent = name.charAt(0).toUpperCase();
         if (workspaceDialogMode === 'settings') activeWorkspace.dataset.access = workspaceAccess.value;
+        if (activeWorkspace.classList.contains('is-current')) {
+          currentWorkspaceName.textContent = name;
+          currentWorkspaceAvatar.textContent = name.charAt(0).toUpperCase();
+        }
         showToast(workspaceDialogMode === 'rename' ? 'Workspace renamed' : 'Workspace settings saved');
       }
       workspaceDialog.classList.remove('open');
@@ -916,9 +1062,14 @@
     deleteWorkspaceDialog.addEventListener('click', event => { if (event.target === deleteWorkspaceDialog) deleteWorkspaceDialog.classList.remove('open'); });
     document.getElementById('confirmDeleteWorkspace').addEventListener('click', () => {
       if (!activeWorkspace) return;
-      const name = activeWorkspace.querySelector('span').textContent;
+      const name = activeWorkspace.querySelector('.workspace-item-name').textContent;
+      const wasCurrent = activeWorkspace.classList.contains('is-current');
       activeWorkspace.remove();
       activeWorkspace = null;
+      if (wasCurrent) {
+        const fallbackWorkspace = workspaceList.querySelector('.workspace-item');
+        if (fallbackWorkspace) selectWorkspace(fallbackWorkspace);
+      }
       deleteWorkspaceDialog.classList.remove('open');
       showToast('Workspace deleted: ' + name);
     });
@@ -928,7 +1079,7 @@
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         button.classList.add('active');
         activeFilter = button.dataset.filter === 'recent' ? 'all' : button.dataset.filter;
-        document.querySelector('.page-title').textContent = button.dataset.filter === 'starred' ? 'Starred' : button.dataset.filter === 'recent' ? 'Recent' : 'All projects';
+        document.querySelector('.page-title').textContent = button.dataset.viewTitle || 'All projects';
         applyFilters();
       });
     });
@@ -999,6 +1150,7 @@
     document.addEventListener('click', event => {
       if (!event.target.closest('.project-menu') && !event.target.closest('.more-button')) closeMenu();
       if (!event.target.closest('#workspaceMenu')) closeWorkspaceMenu();
+      if (!event.target.closest('.workspace-bar')) closeWorkspaceDropdown();
     });
 
     function openDialog() {
