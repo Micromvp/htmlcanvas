@@ -85,6 +85,9 @@
     .brand-name { font-weight: 650; font-size: 14px; }
 
     .sidebar-content { padding: 12px 10px; }
+    .global-nav { padding-top: 8px; padding-bottom: 12px; }
+    .workspace-nav { padding-top: 4px; }
+    .sidebar-divider { height: 1px; flex: 0 0 auto; background: var(--border); }
 
     .nav-label {
       margin: 18px 10px 6px;
@@ -705,6 +708,14 @@
         <span class="search-shortcut">⌘ K</span>
       </label>
 
+      <nav class="sidebar-content global-nav" aria-label="Project navigation">
+        <button class="nav-item active" data-filter="recent" data-view-title="Recent"><i data-lucide="clock-3"></i>Recent</button>
+        <button class="nav-item" data-filter="all" data-view-title="All projects"><i data-lucide="layout-grid"></i>All projects</button>
+        <button class="nav-item" data-filter="starred" data-view-title="Starred"><i data-lucide="star"></i>Starred</button>
+      </nav>
+
+      <div class="sidebar-divider" aria-hidden="true"></div>
+
       <div class="workspace-bar">
         <button class="current-workspace" id="workspaceSwitcher" aria-expanded="false" aria-haspopup="menu">
           <span class="workspace-avatar" id="currentWorkspaceAvatar">S</span>
@@ -725,10 +736,9 @@
         </div>
       </div>
 
-      <nav class="sidebar-content" aria-label="Project navigation">
-        <button class="nav-item active" data-filter="all" data-view-title="All projects"><i data-lucide="layout-grid"></i>All projects</button>
-        <button class="nav-item" data-filter="recent" data-view-title="Recent"><i data-lucide="clock-3"></i>Recent</button>
-        <button class="nav-item" data-filter="starred" data-view-title="Starred"><i data-lucide="star"></i>Starred</button>
+      <nav class="sidebar-content workspace-nav" aria-label="Workspace navigation">
+        <button class="nav-item"><i data-lucide="file"></i>Drafts</button>
+        <button class="nav-item"><i data-lucide="grid-2x2"></i>All folders</button>
         <button class="nav-item"><i data-lucide="panels-top-left"></i>Resources</button>
         <button class="nav-item"><i data-lucide="trash-2"></i>Trash</button>
       </nav>
@@ -755,7 +765,7 @@
         <div class="content-inner">
           <div class="page-head">
             <div>
-              <h1 class="page-title">All projects</h1>
+              <h1 class="page-title">Recent</h1>
               <p class="page-description">Create, organize, and continue your web projects.</p>
             </div>
             <div class="topbar-spacer"></div>
