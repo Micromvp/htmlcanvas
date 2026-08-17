@@ -294,6 +294,16 @@
       width: min(440px, 48vw);
     }
 
+    .sidebar-search {
+      width: auto;
+      margin: 10px 10px 0;
+    }
+
+    .sidebar-search .search-input {
+      height: 34px;
+      background: var(--panel-muted);
+    }
+
     .search-wrap > svg {
       position: absolute;
       top: 50%;
@@ -670,6 +680,7 @@
       .main { min-height: 100vh; }
       .mobile-menu { display: grid; }
       .search-wrap { width: min(360px, calc(100vw - 132px)); }
+      .sidebar-search { width: auto; }
       .search-shortcut { display: none; }
       .content { overflow: visible; padding: 22px 16px 36px; }
       .page-head { align-items: flex-start; }
@@ -687,6 +698,12 @@
         <div class="logo" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
         <div class="brand-name">HTML Canvas</div>
       </div>
+
+      <label class="search-wrap sidebar-search">
+        <i data-lucide="search"></i>
+        <input class="search-input" id="searchInput" type="search" placeholder="Search projects" autocomplete="off">
+        <span class="search-shortcut">⌘ K</span>
+      </label>
 
       <div class="workspace-bar">
         <button class="current-workspace" id="workspaceSwitcher" aria-expanded="false" aria-haspopup="menu">
@@ -709,8 +726,9 @@
       </div>
 
       <nav class="sidebar-content" aria-label="Project navigation">
-        <button class="nav-item active" data-filter="recent" data-view-title="Drafts"><i data-lucide="file"></i>Drafts</button>
-        <button class="nav-item" data-filter="all" data-view-title="All folders"><i data-lucide="grid-2x2"></i>All folders</button>
+        <button class="nav-item active" data-filter="all" data-view-title="All projects"><i data-lucide="layout-grid"></i>All projects</button>
+        <button class="nav-item" data-filter="recent" data-view-title="Recent"><i data-lucide="clock-3"></i>Recent</button>
+        <button class="nav-item" data-filter="starred" data-view-title="Starred"><i data-lucide="star"></i>Starred</button>
         <button class="nav-item"><i data-lucide="panels-top-left"></i>Resources</button>
         <button class="nav-item"><i data-lucide="trash-2"></i>Trash</button>
       </nav>
@@ -727,11 +745,6 @@
     <main class="main">
       <header class="topbar">
         <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open navigation"><i data-lucide="menu"></i></button>
-        <label class="search-wrap">
-          <i data-lucide="search"></i>
-          <input class="search-input" id="searchInput" type="search" placeholder="Search projects" autocomplete="off">
-          <span class="search-shortcut">⌘ K</span>
-        </label>
         <div class="topbar-spacer"></div>
         <button class="icon-button" title="Help" aria-label="Help"><i data-lucide="circle-help"></i></button>
         <button class="icon-button" title="Notifications" aria-label="Notifications"><i data-lucide="bell"></i></button>
